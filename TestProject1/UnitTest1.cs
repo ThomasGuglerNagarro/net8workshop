@@ -42,5 +42,25 @@ namespace TestProject1
         {
             NET8.NewFeatures();
         }
+        [Fact]
+        public void Demo07_NET8()
+        {
+            NET8.NewCollectionFeatures();
+        }
+        [Fact]
+        public void Demo08_NullableReferenceTypeDemo()
+        {
+            NullableReferenceTypeDemo.Demo();
+        }
+        [Fact]
+        public void Demo09_NET8()
+        {
+            NET8.DemoCollectionExpressions();
+        }
+        [Fact]
+        public void Demo10_NET8()
+        {
+            NET8.DemoPrimaryCtorClasses();
+        }
     }
 }

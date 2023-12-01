@@ -28,6 +28,17 @@ public class User(string name, DateOnly dateOfBirth)
     }
     public string? PropThatCanBeNull { get; set; } // nullable reference type
 
+    public static int GetNameLength(User user)
+    {
+        // null check? _ = user.PropThatCanBeNull ?? throw new ArgumentNullException(); 
+        return user.PropThatCanBeNull.Length; // warning, get rid of warning with "!" operator
+        // return user?.PropThatCanBeNull?.Length ?? 0; // ?. operator and null colescing operator
+
+        // property pattern matching fpr "not null check"
+        // V1 if (user?.PropThatCanBeNull is { Length: var length }) return length; 
+        // V2 return user?.PropThatCanBeNull is { Length: var length } ? length : 0;
+    }
+
 }
 
 /// <summary>
@@ -45,7 +56,8 @@ public record UserR(string Name, DateOnly DateOfBirth)
         (name, var dateOfBirth) = user2;
         Console.WriteLine(dateOfBirth);
 
-        // var (year, month, day) = DateTime.Now;
+        // Check Utils.cs
+        var (year, month, day) = DateTime.Now;
     }
     public void Deconstruct(out string name, out DateOnly dateOfBirth)
     {
