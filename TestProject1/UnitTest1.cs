@@ -1,4 +1,5 @@
 using ClassLibrary1;
+using FluentAssertions;
 using Xunit.Abstractions;
 
 namespace TestProject1
@@ -61,6 +62,40 @@ namespace TestProject1
         public void Demo10_NET8()
         {
             NET8.DemoPrimaryCtorClasses();
+        }
+        [Fact]
+        public void Demo11_Patterns()
+        {
+            Patterns.IsWeekDay(DateOnly.FromDateTime(DateTime.Now)).Should().BeTrue();
+        }
+        [Fact]
+        public void Demo12_Patterns()
+        {
+            Patterns.TypePattern();
+        }
+        [Fact]
+        public void Demo13_Patterns()
+        {
+            Patterns.ListPatterns();
+            Patterns.ListPatterns2();
+        }
+        [Fact]
+        public void Demo14_Patterns()
+        {
+            Patterns.SwitchPattern();
+        }
+
+        [Theory]
+        [InlineData(12, true)]
+        [InlineData(8, false)]
+        public void Demo15_Patterns(int hour, bool expectedResult)
+        {
+            Patterns.IsArbeitsPausenZeit(new DateTime(2023, 12, 1, hour, 0, 0)).Should().Be(expectedResult);
+        }
+        [Fact]
+        public void Demo16_Patterns()
+        {
+            Patterns.ExtendedPropertyPattern();
         }
     }
 }
