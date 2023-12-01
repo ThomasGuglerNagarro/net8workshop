@@ -12,10 +12,35 @@ namespace TestProject1
             output = testOutputHelper;
         }
         [Fact]
-        public void PointDemo()
+        public void Demo01_Point()
         {
             Point.Demo();
             output.WriteLine("PointDemo");
+        }
+        [Fact]
+        public void Demo02_User()
+        {
+            UserR.WithOperator();
+        }
+        [Fact]
+        public void Demo03_Operators()
+        {
+            Operators.IfElseToBracesToTernaryOperatorToSwitchStatementToSwitchExpression();
+        }
+        [Fact]
+        public void Demo04_Operators()
+        {
+            Operators.Demo();
+        }
+        [Fact]
+        public void Demo05_Operators()
+        {
+            Operators.MovingAverage();
+        }
+        [Fact]
+        public void Demo06_NET8()
+        {
+            NET8.NewFeatures();
         }
     }
 }
