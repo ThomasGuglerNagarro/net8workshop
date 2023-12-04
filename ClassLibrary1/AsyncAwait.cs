@@ -2,12 +2,16 @@
 
 namespace ClassLibrary1;
 
+
 public class AsyncAwait
 {
     public async Task<string> RunSomethingGood()
     {
         var repo = new Repository();
-        return await repo.GetSomethingAsync();
+        await repo.GetSomethingAsync().ConfigureAwait(false);
+        // do heavy calculation => no context switch to calling thread! (maybe UI thread!)
+        // repo.DoSomethingHeavy();
+        return await repo.GetSomethingAsync().ConfigureAwait(false);
     }
 
     public void RunSomethingBad()
