@@ -120,7 +120,7 @@ public class Patterns
             Console.WriteLine("Pattern match");
         }
         // new: ".." range operator
-        // capture with "var s"
+        // capture with "var s", slice pattern
         if (x is [1,_,..var s,5])
         {
             Console.WriteLine(s);

@@ -1,6 +1,4 @@
-﻿namespace ClassLibrary1;
-
-// alias any type 
+﻿// alias any type 
 using Personn = (string FirstName, string LastName);
 using ints = int[];
 using System.Collections.Immutable;
@@ -8,6 +6,8 @@ using Grade = decimal; // System.Decimal
 using MyPoint = (int x, int y);
 using Grade2 = (decimal grade, decimal weight);
 using unsafe Grade3 = (decimal grade, decimal weight)*;
+
+namespace ClassLibrary1;
 
 // inlinearray BCL => .net standard missing
 // interceptors
