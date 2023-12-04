@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using System.Buffers;
 using System.Collections.Concurrent;
+using System.Globalization;
 using System.Numerics;
 
 namespace ClassLibrary1;
@@ -9,6 +11,18 @@ public class Performance
     private static MemoryCache _cache = new MemoryCache(new MemoryCacheOptions());
     private readonly object _syncRoot = new object();
     private readonly List<int> _list = new List<int>();
+
+    public void DemoStackallocAndSpanBegin()
+    {
+        var a1 = new int[10] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 0 }; // reference type    
+        var a2 = a1[2..6]; // 2,3,4,5 + Copy of a1
+        var a3 = a1.AsSpan()[2..6]; // 2,3,4,5 + NO Copy of a1
+        // var a3 = a1.AsSpan().Slice(2, 4); 
+        a3[0]= 500;
+        Console.WriteLine(a1[0]); // ?
+        Console.WriteLine(a2[0]);
+        Console.WriteLine(a3[0]);
+    }
 
     public async Task ConcurrentSample()
     {
@@ -196,4 +210,175 @@ public class Performance
         await Task.Delay(500).ConfigureAwait(false);
         return await Task.FromResult(item).ConfigureAwait(false);
     }
+
+    public static void DateWithStringAndSubstringDemo()
+    {
+        string dateAsText = "02 07 2021";
+        var date = DateWithStringAndSubstring(dateAsText);
+        Console.WriteLine(date);
+    }
+
+    internal static (int day, int month, int year) DateWithStringAndSubstring(string inputString)
+    {
+        // Problem: new string on heap + GC(!)
+        var dayAsText = inputString.Substring(0, 1);
+        var monthAsText = inputString.Substring(3, 2);
+        var yearAsText = inputString.Substring(6);
+        var day = int.Parse(dayAsText);
+        var month = int.Parse(monthAsText);
+        var year = int.Parse(yearAsText);
+        return (day, month, year);
+    }
+    /* not with .net standard 2.0: int.Parse in System.Runtime
+    internal static (int day, int month, int year) DateWithStringAndSpan(string inputString)
+    {
+        // no alloc!, no GC!, ist immer am stack, ist nur eine liste von adressen(mit Offset) am stack auf den heap.
+        ReadOnlySpan<char> dateAsSpan = inputString; //.AsSpan();
+        var dayAsText = dateAsSpan.Slice(0, 1);
+        var monthAsText = dateAsSpan.Slice(3, 2);
+        var yearAsText = dateAsSpan.Slice(6);
+        var day = int.Parse(dayAsText);
+        var month = int.Parse(monthAsText);
+        var year = int.Parse(yearAsText);
+        return (day, month, year);
+    } */
+}
+
+// Span<T> as part of System.Runtime.dll is not available in .NET Standard 2.0.
+// There's a NuGet package (System.Memory), but that provides only those types and not the changes to the BCL to use Span<T>.
+
+internal class Span2
+{
+    internal void ArraySegmentDemo()
+    {
+        var data = new ArraySegment<byte>(Guid.NewGuid().ToByteArray());
+        var guidBuffer = new byte[16];
+        Buffer.BlockCopy(data.Array, data.Offset, guidBuffer, 0, 16);
+        var lockTokenGuid = new Guid(guidBuffer);
+        Console.Write(lockTokenGuid.ToString());
+    }
+    internal void DemoNoAllocationBut2xSlower()
+    {
+        var data = new ArraySegment<byte>(Guid.NewGuid().ToByteArray());
+
+        byte[] guidBuffer = ArrayPool<byte>.Shared.Rent(16);
+
+        Buffer.BlockCopy(data.Array, data.Offset, guidBuffer, 0, 16); // supports endian
+        var lockTokenGuid = new Guid(guidBuffer);
+
+        ArrayPool<byte>.Shared.Return(guidBuffer);
+
+        Console.Write(lockTokenGuid.ToString());
+    }
+
+    internal void DemoStackalloc()
+    {
+        // not safe code (byte little endian => copy to could fail)
+        var data = new ArraySegment<byte>(Guid.NewGuid().ToByteArray());
+
+        Span<byte> guidBytes = stackalloc byte[16];
+        data.AsSpan().CopyTo(guidBytes);
+        var lockTokenGuid = new Guid(guidBytes.ToArray()); // .NET standard: .ToArray()
+        Console.Write(lockTokenGuid.ToString());
+    }
+
+    internal void DemoSpanOfInt() // Span= am Stack ein array von pointern auf den heap
+    {
+        int[] data = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 0 };
+        // var dataSpan = data.AsSpan()[2..6]; // geht im implizit duch Span<int> dataSpan = data;
+        // Span<int> dataSpan = data;
+        Span<int> dataSpan = data.AsSpan().Slice(2, 4);
+        dataSpan[0] = 500;
+        foreach (var i in data) Console.WriteLine(i);
+        Console.WriteLine();
+        foreach (var i in dataSpan) Console.WriteLine(i);
+    }
+
+    internal void DemoSpanOfStrings()
+    {
+        var strSpan = "bla".AsSpan(); // => ReadOnlySpan, weil string immutable
+        foreach (var i in strSpan) Console.WriteLine(i);
+        // zb. list etc geht NICHT, weil nicht immutable
+    }
+
+    internal void DemoStackallocUnsafeOld()
+    {
+        // Allowunsafe ! => ALTE Variante
+        unsafe
+        {
+            int* data = stackalloc int[10] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 0 };
+        }
+    }
+
+    internal void DemoStackallocNewWithSpan()
+    {
+        Span<int> data = stackalloc int[10] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 0 };
+        foreach (var i in data) Console.WriteLine(i);
+    }
+    internal void DemoPoint3D()
+    {
+        // var p = new Point3D(1.1, 2.2, 3.3);
+        // var p = Point3D.ParseWithMemoryProblem("(1.1, 2.2, 3.3)");
+        var p = Point3D.ParseBetter("(1.1, 2.2, 3.3)");
+        Console.WriteLine(p);
+    }
+}
+
+public record struct Point3D(double X, double Y, double Z)
+{
+    private const int MaxStackAllocSize = 256;
+
+    internal static Point3D ParseWithMemoryProblem(string input) // allocates 248 byte => gc!
+    {
+        try
+        {
+            // klammern entfernen, 3 Teile genrieren
+            var items = input.Replace("(", "").Replace(")", "").Split(',');
+            return new Point3D(
+                double.Parse(items[0], CultureInfo.CurrentUICulture),
+                double.Parse(items[1], CultureInfo.CurrentUICulture),
+                double.Parse(items[2], CultureInfo.CurrentUICulture));
+        }
+        catch (Exception e)
+        {
+            throw new FormatException("input incorrect format", e);
+        }
+    }
+    internal static Point3D ParseBetter(string input) // without any heap memory allocation, und etwas schneller
+    {
+        try
+        {
+            // input in span umwandeln und initialisieren
+            var chars = input.AsSpan();
+            Span<double> coords = stackalloc double[] { 0.0, 0.0, 0.0 }; // initialize with 0! nicht sicher bei stackalloc!
+            Span<char> number = chars.Length < MaxStackAllocSize ? stackalloc char[chars.Length] : new char[chars.Length]; // maximale länger muss gesetzt werden..müsste auf max. länge geprüft werden!
+            number.Fill(' '); // init mit spaces
+            // work:
+            int count = 0; int pos = 0;
+            foreach (var c in chars)
+            {
+                if (c == '(') // Start
+                    continue;
+                // ende?
+                if (c == ',' || c == ')')
+                {
+                    // double.Parse(number, CultureInfo.CurrentUICulture); = keine heap alloc weil inpiut = span
+                    // double.Parse(number.ToString(), CultureInfo.CurrentUICulture); = leider schon heap alloc weil inpiut != span
+                    coords[count++] = double.Parse(number.ToString(), CultureInfo.CurrentUICulture);
+                    pos = 0;
+                    number.Fill(' ');
+                    continue; // nächster Teil
+                }
+                number[pos++] = c;
+            }
+            return new Point3D(coords[0], coords[1], coords[2]);
+
+        }
+        catch (Exception e)
+        {
+            throw new FormatException("input incorrect format", e);
+        }
+    }
+
+    public override string ToString() => $"({X},{Y},{Z})";
 }

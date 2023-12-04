@@ -114,10 +114,15 @@ namespace TestProject1
             var number = new Repository().GetIntAsync().Result; // BAD: can cause deadlocks, but .net core fixes this, will work. Next Problem: potentail threadpool issues, waste resources. better: await always!
         }
         [Fact]
-        public async Task<int> Demo29_AsyncAwait()
+        public async Task<int> Demo20_AsyncAwait()
         {
             // GOOD
             return await new Repository().GetIntAsync();
+        }
+        [Fact]
+        public void Demo21_Performance()
+        {
+            new Performance().DemoStackallocAndSpanBegin();
         }
     }
 }
