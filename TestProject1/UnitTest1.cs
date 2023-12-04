@@ -97,5 +97,27 @@ namespace TestProject1
         {
             Patterns.ExtendedPropertyPattern();
         }
+        [Fact]
+        public async Task<string> Demo17_AsyncAwait()
+        {
+            return await new AsyncAwait().RunSomethingGood();
+        }
+        [Fact]
+        public void Demo18_AsyncAwait()
+        {
+            new AsyncAwait().RunSomethingBad();
+        }
+        [Fact]
+        public void Demo19_AsyncAwait()
+        {
+            // BAD
+            var number = new Repository().GetIntAsync().Result; // BAD: can cause deadlocks, but .net core fixes this, will work. Next Problem: potentail threadpool issues, waste resources. better: await always!
+        }
+        [Fact]
+        public async Task<int> Demo29_AsyncAwait()
+        {
+            // GOOD
+            return await new Repository().GetIntAsync();
+        }
     }
 }
