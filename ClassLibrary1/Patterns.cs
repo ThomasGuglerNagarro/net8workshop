@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace ClassLibrary1;
+﻿namespace ClassLibrary1;
 
 internal record PersonRecord(string Name, int Age);
 
