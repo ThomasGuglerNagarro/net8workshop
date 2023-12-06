@@ -1,4 +1,4 @@
-using ClassLibrary1;
+﻿using ClassLibrary1;
 using FluentAssertions;
 using Xunit.Abstractions;
 

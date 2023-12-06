@@ -242,6 +242,27 @@ public class Performance
         var year = int.Parse(yearAsText);
         return (day, month, year);
     } */
+    public string GetHost(string url)
+    {
+        // 1
+        var uri = new Uri(url);
+        return uri.Host;
+        // 2: indexof("://")..Substring, indexof('/')...Substring, start-end index => 4 strings alloc statt 40+!
+        // 3: with Span :)
+        // var prefixOffset = url.AsSpan().IndexOf(stackalloc char[] { ':', '/', '/' }); // needs System.Memory
+        // var startIndex = prefixOffset == -1 ? 0 : prefixOffset + 3;
+        // var endIndex = url.AsSpan(startIndex).IndexOf('/');
+        // var span = endIndex == -1 ? url.AsSpan(startIndex) : url.AsSpan(startIndex, endIndex);
+        // return span.ToString();
+        // 4: BEST solution with String Pool "CommunityTooKit.HighPerformance"
+        /*
+        var prefixOffset = url.AsSpan().IndexOf(stackalloc char[] { ':', '/', '/' }); // needs System.Memory
+        var startIndex = prefixOffset == -1 ? 0 : prefixOffset + 3;
+        var endIndex = url.AsSpan(startIndex).IndexOf('/');
+        var span = endIndex == -1 ? url.AsSpan(startIndex) : url.AsSpan(startIndex, endIndex);
+        return StringPool.Shared.GetOrAdd(span); // ident bis auf das return (kein ToString)
+        */
+    }
 }
 
 // Span<T> as part of System.Runtime.dll is not available in .NET Standard 2.0.
