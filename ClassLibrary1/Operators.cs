@@ -73,18 +73,20 @@ public class Operators
         var slice3 = array[2..];      // array[Range.StartAt(2)]
         var slice4 = array[..];       // array[Range.All]
 
-
-        //?? and ??= operators - the null-coalescing operators
+        // ?? 
+        int? number = null;
+        number = number ?? 0;
+        // ??= operators - the null - coalescing operators
         List<int> numbers = null;
         int? a = null;
         Console.WriteLine((numbers is null)); // expected: true
-                                              // if numbers is null, initialize it. Then, add 5 to numbers
+        // if numbers is null, initialize it. Then, add 5 to numbers
         (numbers ??= new List<int>()).Add(5);
         Console.WriteLine(string.Join(" ", numbers));  // output: 5
         Console.WriteLine((numbers is null)); // expected: false        
         Console.WriteLine((a is null)); // expected: true
         Console.WriteLine((a ?? 3)); // expected: 3 since a is still null 
-                                     // if a is null then assign 0 to a and add a to the list
+        // if a is null then assign 0 to a and add a to the list
         numbers.Add(a ??= 0);
         Console.WriteLine((a is null)); // expected: false        
         Console.WriteLine(string.Join(" ", numbers));  // output: 5 0
@@ -93,6 +95,9 @@ public class Operators
         // using var f1 = new FileStream("sdfsdf", FileMode.Open); // using declaration
     }
 
+    /// <summary>
+    /// https://en.wikipedia.org/wiki/Moving_average
+    /// </summary>
     public static void MovingAverage() // Gleitende Durchschnitte
     {
         var sequence = Enumerable.Range(0, 1000).Select(x => (int)(Math.Sqrt(x) * 100)).ToArray();
