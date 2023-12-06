@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using CommunityToolkit.HighPerformance.Buffers;
+using Microsoft.Extensions.Caching.Memory;
 using System.Buffers;
 using System.Collections.Concurrent;
 using System.Globalization;
 using System.Numerics;
+using System.Text.RegularExpressions;
 
 namespace ClassLibrary1;
 
@@ -242,26 +244,39 @@ public class Performance
         var year = int.Parse(yearAsText);
         return (day, month, year);
     } */
-    public string GetHost(string url)
+    public string GetHostV1(string url)
     {
-        // 1
         var uri = new Uri(url);
         return uri.Host;
-        // 2: indexof("://")..Substring, indexof('/')...Substring, start-end index => 4 strings alloc statt 40+!
+    }
+    public string GetHostV2(string url)
+    {
+        var result = Regex.Match(url, @"(http:|https:)\/\/(.*?)\/");
+        return result.ToString();
+    }
+    public string GetHostV3(string url)
+    {
+        url = url.Replace("https://", "").Replace("http://", "").Replace("www.", ""); //Remove the prefix
+        string[] fragments = url.Split('/');
+        return fragments[0];
+    }
+    public string GetHostV4(string url)
+    {
         // 3: with Span :)
-        // var prefixOffset = url.AsSpan().IndexOf(stackalloc char[] { ':', '/', '/' }); // needs System.Memory
-        // var startIndex = prefixOffset == -1 ? 0 : prefixOffset + 3;
-        // var endIndex = url.AsSpan(startIndex).IndexOf('/');
-        // var span = endIndex == -1 ? url.AsSpan(startIndex) : url.AsSpan(startIndex, endIndex);
-        // return span.ToString();
-        // 4: BEST solution with String Pool "CommunityTooKit.HighPerformance"
-        /*
+        var prefixOffset = url.AsSpan().IndexOf(stackalloc char[] { ':', '/', '/' }); // needs System.Memory
+        var startIndex = prefixOffset == -1 ? 0 : prefixOffset + 3;
+        var endIndex = url.AsSpan(startIndex).IndexOf('/');
+        var span = endIndex == -1 ? url.AsSpan(startIndex) : url.AsSpan(startIndex, endIndex);
+        return span.ToString();
+    }
+    public string GetHostV5(string url)
+    {
+        // 4: BEST solution with String Pool "CommunityToolKit.HighPerformance"
         var prefixOffset = url.AsSpan().IndexOf(stackalloc char[] { ':', '/', '/' }); // needs System.Memory
         var startIndex = prefixOffset == -1 ? 0 : prefixOffset + 3;
         var endIndex = url.AsSpan(startIndex).IndexOf('/');
         var span = endIndex == -1 ? url.AsSpan(startIndex) : url.AsSpan(startIndex, endIndex);
         return StringPool.Shared.GetOrAdd(span); // ident bis auf das return (kein ToString)
-        */
     }
 }
 
