@@ -3,7 +3,7 @@ using System.Diagnostics;
 // 1: Convert to file-scoped namespace
 namespace ClassLibrary1
 {
-    public readonly struct Point // better: readonly struct
+    public readonly struct Point // better: readonly struct as just struct is mutable
     {
         public static void Demo()
         {
