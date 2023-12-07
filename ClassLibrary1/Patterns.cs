@@ -11,7 +11,7 @@ public static class PersonRecordDemo
         var copiedPerson = p with { Age = 46 };
         var switchResult = copiedPerson switch
         {
-            ("Thomas", > 2) => "I'm the copy of Thomas",
+            ("Thomas", > 27) => "I'm the copy of Thomas",
             ("Thomas", _) => "I'm Thomas",
             _ => throw new ArgumentException()
         };
@@ -83,10 +83,10 @@ public class Patterns
     internal static decimal CalculateToll(object vehicle) => // switch type pattern
         vehicle switch
         {
-            Car { Passengers: 0 } _ => 1.00m,
-            Car { Passengers: >= 1 and <= 2 } _ => 1.50m,
-            Car _ => 2.00m,
-            Bus _ => 5.00m,
+            Car { Passengers: 0 } => 1.00m,
+            Car { Passengers: >= 1 and <= 2 } => 1.50m,
+            Car => 2.00m,
+            Bus => 5.00m,
             { } => throw new ArgumentException("unknown type"),
             null => throw new ArgumentNullException(nameof(vehicle)),
         };
@@ -115,7 +115,7 @@ public class Patterns
 
         var x = new[] { 1, 2, 3, 4, 5 };
         // old
-        if (x.Length > 3 && x[0] == 1 && x[x.Length - 1] == 5)
+        if (x.Length >= 3 && x[0] == 1 && x[x.Length - 1] == 5)
         {
             Console.WriteLine("Pattern match");
         }

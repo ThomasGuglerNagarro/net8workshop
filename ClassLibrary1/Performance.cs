@@ -21,9 +21,10 @@ public class Performance
         var a3 = a1.AsSpan()[2..6]; // 2,3,4,5 + NO Copy of a1
         // var a3 = a1.AsSpan().Slice(2, 4); 
         a3[0]= 500;
-        Console.WriteLine(a1[0]); // ?
-        Console.WriteLine(a2[0]);
-        Console.WriteLine(a3[0]);
+        a3[1] = 600;
+        Console.WriteLine(a1[2]); // ?
+        Console.WriteLine(a2[2]);
+        Console.WriteLine(a3[2]);
     }
 
     public async Task ConcurrentSample()

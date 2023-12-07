@@ -15,7 +15,7 @@ public class AsyncIterators
 
     internal static async IAsyncEnumerable<int> GenerateSequence() // IAsyncEnumerable
     {
-        for (int i = 0; i < 50; i++) 
+        for (int i = 0; i < 50; i++)
         {
             // every 10 elements wait 2 seconds:
             if (i % 10 == 0)
@@ -28,10 +28,11 @@ public class AsyncIterators
     private async IAsyncEnumerable<string> GetLineByLineAsync()
     {
         using var stream = new StreamReader(@"C:\bla\bla..");
-        while(await stream.ReadLineAsync() is string line)
+        while (await stream.ReadLineAsync() is string line)
         {
             await Task.Delay(100);
             yield return line;
         }
+        // implicit Dispose
     }
 }

@@ -21,6 +21,7 @@ public class User(string name, DateOnly dateOfBirth)
     }
     public string Name { get; } = name;
     public int Age { get; } = DateTime.Today.Year - dateOfBirth.Year;
+    // public int Age2 => DateTime.Today.Year - dateOfBirth.Year;
     public string OutputOtherProp(User u)
     {
         _ = u ?? throw new ArgumentNullException(); // discard, besser als "if null else,..
@@ -31,12 +32,12 @@ public class User(string name, DateOnly dateOfBirth)
     public static int GetNameLength(User user)
     {
         // null check? _ = user.PropThatCanBeNull ?? throw new ArgumentNullException(); 
-        return user.PropThatCanBeNull.Length; // warning, get rid of warning with "!" operator
-        // return user?.PropThatCanBeNull?.Length ?? 0; // ?. operator and null colescing operator
+        // return user.PropThatCanBeNull.Length; // warning, get rid of warning with "!" operator
+        return user?.PropThatCanBeNull?.Length ?? 0; // ?. operator and null colescing operator
 
         // property pattern matching fpr "not null check"
         // V1 if (user?.PropThatCanBeNull is { Length: var length }) return length; 
-        // V2 return user?.PropThatCanBeNull is { Length: var length } ? length : 0;
+        // return user?.PropThatCanBeNull is { Length: var length } ? length : 0;
     }
 
 }
@@ -46,7 +47,7 @@ public class User(string name, DateOnly dateOfBirth)
 /// </summary>
 /// <param name="Name"></param>
 /// <param name="DateOfBirth"></param>
-public record UserR(string Name, DateOnly DateOfBirth)
+public record class UserR(string Name, DateOnly DateOfBirth)
 {
     public static void WithOperator() // WithOperator
     {
@@ -59,6 +60,7 @@ public record UserR(string Name, DateOnly DateOfBirth)
         // Check Utils.cs
         var (year, month, day) = DateTime.Now;
     }
+    // ~UserR() => Console.WriteLine("Destructor");
     public void Deconstruct(out string name, out DateOnly dateOfBirth)
     {
         name = Name;
@@ -68,4 +70,10 @@ public record UserR(string Name, DateOnly DateOfBirth)
 
 
 
-
+public class Workshop(string param1, string param2)
+{
+    static void Demo()
+    {
+        var w = new Workshop("a", "b");
+    }
+}

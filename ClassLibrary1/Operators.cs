@@ -8,6 +8,7 @@ public class Operators
     {
         var environment = "PREPROD";
         String configSettings = null;
+        /*
         if (environment == "UAT")
             configSettings = "UAT";
         else if (environment == "PREPROD")
@@ -15,19 +16,19 @@ public class Operators
         else if (environment == "PROD")
             configSettings = "PRD";
         else
-            configSettings = string.Empty;
+            configSettings = string.Empty;*/
         // 1: Better with braces?
         // 2: better with "?:" ?
-        /*
-        configSettings = environment == "UAT" ? "UAT" :
-            environment == "PREPROD" ? "PRP" :
-            environment == "PROD" ? "PRD" : string.Empty; */
+        /* configSettings = environment == "UAT" ? "UAT" :
+             environment == "PREPROD" ? "PRP" :
+             environment == "PROD" ? "PRD" : string.Empty;*/
         // 3: better with switch statement?
-        /*
         switch (environment)
         {
             case "UAT":
+            case "UAT2":
                 configSettings = "UAT";
+                Console.WriteLine("234234");
                 break;
             case "PROPROD":
                 configSettings = "PRP";
@@ -39,20 +40,18 @@ public class Operators
                 configSettings = string.Empty;
                 break;
         }
-        */
         // 4: best? switch expression
-        /*
         configSettings = environment switch
         {
-            "UAT" => "UAT",
+            "UAT" or "UAT1" => "UAT",
             "PREPROD" => "PRP",
             "PROD" => "PRD",
             _ => string.Empty
-        };*/
-        // 5: best
+        };
+        // 5: best?
         var envMap = new Dictionary<string, string>
         {
-            { "UAT", "UAT" },
+            { "UAT" , "UAT" },
             { "PREPROD", "PRP" },
             { "PROD", "PRD" }
         }.ToImmutableDictionary();
@@ -64,9 +63,9 @@ public class Operators
     {
 
         var array = new int[] { 1, 2, 3, 4, 5 };
-        // index operatur "^" / System.Index
+        // index operator "^" / System.Index
         var thirdItem = array[2];    // array[2]
-        var lastItem = array[^1];    // array[new Index(1, fromEnd: true)] == list[list.Count - 1];
+        var lastItem = array[^1];    // array[new Index(1, fromEnd: true)] == array[array.Count - 1];
                                      // Range operator ".." / System.Range
         var slice1 = array[2..^3];    // array[new Range(2, new Index(3, fromEnd: true))]
         var slice2 = array[..^3];     // array[Range.EndAt(new Index(3, fromEnd: true))]
@@ -76,7 +75,7 @@ public class Operators
         // ?? 
         int? number = null;
         number = number ?? 0;
-        // ??= operators - the null - coalescing operators
+        // ??= operators - the null - coalescing operators => Thread safe?
         List<int> numbers = null;
         int? a = null;
         Console.WriteLine((numbers is null)); // expected: true

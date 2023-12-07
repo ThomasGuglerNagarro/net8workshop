@@ -10,12 +10,13 @@ using unsafe Grade3 = (decimal grade, decimal weight)*;
 namespace ClassLibrary1;
 
 // inlinearray BCL => .net standard missing
-// interceptors
+// interceptors ..
 public class NET8
 {
     public static void NewFeatures()
     {
-        // new terse syntax : the goal is to provide a unified and user-friendly API for declaring collections.
+        // new terse syntax : the goal is to provide a unified and user-friendly API
+        // for declaring collections.
         List<int> start = [1, 2, 3];
         int[] start2 = { 1, 2, 3 };
         Span<int> end = [5, 6, 7];
@@ -81,9 +82,9 @@ public class NET8
         public Student(string name, int id) : this(name, id, Array.Empty<Grade>()) { }
         public Grade GPA => grades switch // switch expression
         {
-        [] => 4.0m,
-        [var grade] => grade,
-        [.. var all] => all.Average()
+            [] => 4.0m,
+            [var grade] => grade,
+            [.. var all] => all.Average()
         };
     }
 }

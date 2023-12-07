@@ -90,7 +90,8 @@ namespace TestProject1
         [InlineData(8, false)]
         public void Demo15_Patterns(int hour, bool expectedResult)
         {
-            Patterns.IsArbeitsPausenZeit(new DateTime(2023, 12, 1, hour, 0, 0)).Should().Be(expectedResult);
+            Patterns.IsArbeitsPausenZeit(new DateTime(2023, 12, 1, hour, 0, 0))
+                .Should().Be(expectedResult);
         }
         [Fact]
         public void Demo16_Patterns()
