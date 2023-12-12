@@ -9,31 +9,30 @@ using unsafe Grade3 = (decimal grade, decimal weight)*;
 
 namespace ClassLibrary1;
 
+// Microsoft.Bcl.TimeProvider for TimeProvider
+public class PaydayCalculator(TimeProvider timeprovider)
+{
+    public PaydayCalculator() : this(TimeProvider.System)
+    {
+    }
+    public bool IsPayday()
+    {
+        var today = DateOnly.FromDateTime(timeprovider.GetUtcNow().DateTime);
+        var thisMonthsPayday = new DateOnly(today.Year, today.Month, 1).AddMonths(-1).AddDays(-1);
+        thisMonthsPayday = thisMonthsPayday.DayOfWeek switch
+        {
+            DayOfWeek.Saturday => thisMonthsPayday.AddDays(-1),
+            DayOfWeek.Sunday => thisMonthsPayday.AddDays(-2),
+            _ => thisMonthsPayday
+        };
+        return thisMonthsPayday == today;
+    }
+}
+
 // inlinearray BCL => .net standard missing
 // interceptors ..
 public class NET8
 {
-
-    // Microsoft.Bcl.TimeProvider for TimeProvider
-    public class PaydayCalculator(TimeProvider timeprovider)
-    {
-        public PaydayCalculator() : this(TimeProvider.System)
-        {
-        }
-        public bool IsPayday()
-        {
-            var today = DateOnly.FromDateTime(timeprovider.GetUtcNow().DateTime);
-            var thisMonthsPayday = new DateOnly(today.Year, today.Month, 1).AddMonths(-1).AddDays(-1);
-            thisMonthsPayday = thisMonthsPayday.DayOfWeek switch
-            {
-                DayOfWeek.Saturday => thisMonthsPayday.AddDays(-1),
-                DayOfWeek.Sunday => thisMonthsPayday.AddDays(-2),
-                _ => thisMonthsPayday
-            };
-            return thisMonthsPayday == today;
-        }
-    }
-  
     public static void NewFeatures()
     {
         // new terse syntax : the goal is to provide a unified and user-friendly API

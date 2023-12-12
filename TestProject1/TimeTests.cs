@@ -2,7 +2,6 @@
 using FluentAssertions;
 using NSubstitute;
 using Xunit.Abstractions;
-using static ClassLibrary1.NET8;
 
 namespace TestProject1;
 
