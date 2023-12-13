@@ -104,6 +104,11 @@ namespace TestProject1
             return await new AsyncAwait().RunSomethingGood();
         }
         [Fact]
+        public void Demo17_Threads()
+        {
+            Threads.Demo();
+        }
+        [Fact]
         public void Demo18_AsyncAwait()
         {
             new AsyncAwait().RunSomethingBad();
