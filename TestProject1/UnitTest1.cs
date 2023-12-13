@@ -130,5 +130,17 @@ namespace TestProject1
         {
             new Performance().DemoStackallocAndSpanBegin();
         }
+        [Fact]
+        public void Demo22_Performance()
+        {
+            var result = Performance.CalculateAverageAge();
+            output.WriteLine(result.ToString());
+        }
+        [Fact]
+        public void Demo23_Performance()
+        {
+            var result = Performance.CalculateAverageAgeWithSpan();
+            output.WriteLine(result.ToString());
+        }
     }
 }

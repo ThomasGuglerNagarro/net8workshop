@@ -14,6 +14,43 @@ public class Performance
     private readonly object _syncRoot = new object();
     private readonly List<int> _list = new List<int>();
 
+    public static double CalculateAverageAge()
+    {
+        var data = "Thomas, 40\nAnna, 30\nPeter, 21";
+        return CalculateAverageAge(data);
+        double CalculateAverageAge(string data)
+        {
+            var lines = data.Split('\n');
+            var sum = 0.0;
+            foreach (var line in lines)
+            {
+                var age = int.Parse(line.Split(',')[1]);
+                sum += age;
+            }
+            return sum / lines.Length;
+        }
+    }
+    public static double CalculateAverageAgeWithSpan()
+    {
+        var data = "Thomas, 40\nAnna, 30\nPeter, 21";
+        return CalculateAverageAgeWithSpan(data);
+        double CalculateAverageAgeWithSpan(string data)
+        {
+            var sum = 0.0;
+            int numberLines = 0;
+            using var stringReader = new StringReader(data);
+            ReadOnlySpan<char> line;
+            while((line = stringReader.ReadLine().AsSpan())!=null)
+            {
+                numberLines++;
+                var slice = line[(line.IndexOf(',') + 1)..];
+                var age = int.Parse(slice.ToString());
+                sum += age;
+            }
+            return sum / numberLines;
+        }
+    }
+
     public void DemoStackallocAndSpanBegin()
     {
         var a1 = new int[10] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 0 }; // reference type    
