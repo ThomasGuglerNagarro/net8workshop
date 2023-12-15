@@ -19,16 +19,17 @@ public class Operators
             configSettings = string.Empty;*/
         // 1: Better with braces?
         // 2: better with "?:" ?
-        /* configSettings = environment == "UAT" ? "UAT" :
+        /*
+        configSettings = environment == "UAT" ? "UAT" :
              environment == "PREPROD" ? "PRP" :
              environment == "PROD" ? "PRD" : string.Empty;*/
         // 3: better with switch statement?
-        switch (environment)
+       /*  switch (environment)
         {
             case "UAT":
             case "UAT2":
                 configSettings = "UAT";
-                Console.WriteLine("234234");
+               //  Console.WriteLine("234234");
                 break;
             case "PROPROD":
                 configSettings = "PRP";
@@ -39,19 +40,20 @@ public class Operators
             default:
                 configSettings = string.Empty;
                 break;
-        }
+        }*/
         // 4: best? switch expression
-        configSettings = environment switch
+       /* configSettings = environment switch
         {
             "UAT" or "UAT1" => "UAT",
             "PREPROD" => "PRP",
             "PROD" => "PRD",
             _ => string.Empty
-        };
+        };*/
         // 5: best?
         var envMap = new Dictionary<string, string>
         {
             { "UAT" , "UAT" },
+            { "UAT1" , "UAT" },
             { "PREPROD", "PRP" },
             { "PROD", "PRD" }
         }.ToImmutableDictionary();
@@ -61,7 +63,6 @@ public class Operators
 
     public static void Demo()
     {
-
         var array = new int[] { 1, 2, 3, 4, 5 };
         // index operator "^" / System.Index
         var thirdItem = array[2];    // array[2]
@@ -91,7 +92,7 @@ public class Operators
         Console.WriteLine(string.Join(" ", numbers));  // output: 5 0
         Console.WriteLine(a);  // output: 0
 
-        // using var f1 = new FileStream("sdfsdf", FileMode.Open); // using declaration
+        using var f1 = new FileStream("sdfsdf", FileMode.Open); // using declaration
     }
 
     /// <summary>

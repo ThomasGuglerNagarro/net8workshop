@@ -52,7 +52,7 @@ public record class UserR(string Name, DateOnly DateOfBirth)
     public static void WithOperator() // WithOperator
     {
         var user = new UserR("mame", DateOnly.MinValue);
-        var user2 = user with { Name = "other name" };
+        var user2 = user with { Name = "other name" }; // With not class!?
         string name = "test"; // Deconstruct
         (name, var dateOfBirth) = user2;
         Console.WriteLine(dateOfBirth);

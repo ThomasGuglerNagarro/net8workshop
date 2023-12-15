@@ -1,6 +1,4 @@
 ﻿using ClassLibrary1;
-using FluentAssertions;
-using Xunit.Abstractions;
 
 namespace TestProject1
 {
@@ -102,6 +100,8 @@ namespace TestProject1
         public async Task<string> Demo17_AsyncAwait()
         {
             return await new AsyncAwait().RunSomethingGood();
+            // var result = new AsyncAwait().RunSomethingGood().Result;
+            // return result;
         }
         [Fact]
         public void Demo17_Threads()

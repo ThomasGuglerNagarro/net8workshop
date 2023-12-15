@@ -27,8 +27,8 @@ public static class NullableReferenceTypeDemo
         {
             Console.WriteLine(p.Details.LastName.Length);
         }
-        // ArgumentNullException.ThrowIfNull(p.Details);
-        // ArgumentNullException.ThrowIfNull(p.Details.LastName);
+        // not .netstandard20: ArgumentNullException.ThrowIfNull(p.Details);
+        // not .netstandard20: ArgumentNullException.ThrowIfNull(p.Details.LastName);
         Console.WriteLine(p.Details.LastName.Length);
     }
     internal static IEnumerable<PersonSampleBad> Demo2()

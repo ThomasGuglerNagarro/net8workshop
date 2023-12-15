@@ -1,7 +1,5 @@
 ﻿using ClassLibrary1;
-using FluentAssertions;
 using NSubstitute;
-using Xunit.Abstractions;
 
 namespace TestProject1;
 

@@ -50,10 +50,10 @@ public class NET8
 
         // Primary constructors eliminate the need for declaring private fields and manually linking parameter values to those fields in constructor bodies. Say goodbye to that tedious process:
         var p = new Person("Seth", "Gecko");
-        // p.FirstName = "Alan"; ERROR record are immutable by default
+        // p.FirstName = "Alan"; // ERROR record are immutable by default
 
-        Console.WriteLine(nameof(p.LastName)); // nameof now with members names
-
+        // throw new ArgumentNullException($"Fehler bei Klasse {nameof(NET8)} , Methode Z");
+        // Console.WriteLine(nameof(p.LastName)); // nameof now with members names
     }
 
     public record Person(string FirstName, string LastName); // generate public read-only properties. 
@@ -92,6 +92,7 @@ public class NET8
     {
         var others = new[] { 1.0m, 2.0m, 3.0m };
         var mads = new Student("Mads Torgersen", 900751, [3.5m, 2.9m, 1.8m, .. others]);
+        Console.WriteLine(mads.GPA);
     }
 
     public class Student(string name, int id, Grade[] grades)  // primary ctor bei klassen => name+id nicht mehr public props
@@ -99,7 +100,7 @@ public class NET8
         public string Name { get; } = name; // auto property; 1x zugewisen
                                             // zukunft: set => field = value.Trim(); 
         public int Id => id; // computed property, bei jedem access IMMER ausgelesen!
-        public Student(string name, int id) : this(name, id, Array.Empty<Grade>()) { }
+        public Student(string name, int id) : this(name, id, []) { }
         public Grade GPA => grades switch // switch expression
         {
             [] => 4.0m,

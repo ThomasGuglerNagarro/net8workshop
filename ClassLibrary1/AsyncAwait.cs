@@ -8,17 +8,17 @@ public class AsyncAwait
     public async Task<string> RunSomethingGood()
     {
         var repo = new Repository();
-        await repo.GetSomethingAsync().ConfigureAwait(false);
+        await repo.GetSomethingAsync(); //.ConfigureAwait(false);
         // do heavy calculation => no context switch to calling thread! (maybe UI thread!)
         // repo.DoSomethingHeavy();
-        return await repo.GetSomethingAsync().ConfigureAwait(false);
+        return await repo.GetSomethingAsync(); //.ConfigureAwait(false);
     }
 
     public void RunSomethingBad()
     {
         var repo = new Repository();
-        repo.BadBackgroundAsync();
-        // Task.Run(repo.GoodBackgroundAsync); // wraps exception Task.Run=Fire and forget, Service würde zuumindest weiterlaufen! TODO: ein exception handler fehlt dennoch, und erzeugt immer noch neue threads..
+        // repo.BadBackgroundAsync();
+        Task.Run(repo.GoodBackgroundAsync); // wraps exception Task.Run=Fire and forget, Service würde zuumindest weiterlaufen! TODO: ein exception handler fehlt dennoch, und erzeugt immer noch neue threads..
     }
 }
 
@@ -27,7 +27,8 @@ public class Repository
     public async Task<string> GetSomethingAsync()
     {
         await Task.Delay(500);
-        return "sdfsdfsdf"; //  await Task.FromResult("Hello world!");
+        // await File.Read
+        return  "sdfsdfsdf"; //  await Task.FromResult("Hello world!");
     }
 
     public async Task<int> GetIntAsync()
@@ -39,9 +40,8 @@ public class Repository
     {
         var result = await this.GetIntAsync();
         await Task.Delay(5000);
-        throw new Exception("bad..");
-        /*
-        try
+       //  throw new Exception("bad..");
+           try
           {
               await Task.Delay(5000);
               throw new Exception("bad..");
@@ -50,7 +50,7 @@ public class Repository
           {
               // log
               throw; // no Task.innerexception..
-          }*/
+          }
         Console.WriteLine($"The number is {result}");
     }
 

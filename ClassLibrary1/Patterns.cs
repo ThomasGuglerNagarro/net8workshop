@@ -56,6 +56,7 @@ public class Patterns
             DayOfWeek.Sunday => false,
             _ => true
         };
+
     public static string TypePattern()
     {
         Something input = new Rectangle(10, 20);
@@ -64,8 +65,8 @@ public class Patterns
         {
             Rectangle and { Height: > 5 } rect => $"its a rectangle with height:{rect.Height}",
             Circle => "its a circle else",
-            // _ => "its not"
-            var x => "its not"
+            _ => "its not"
+            // var x => "its not"
         };
         return result;
     }
@@ -141,8 +142,8 @@ public class Patterns
         string[] data = ["Name1", "Name2", "Name3"];
         var result = data switch
         {
-            ["Name1", "Name12", "Name13"] => "all names",
-            ["Name1", "Name12", _] => "first two names",
+            ["Name1", "Name2", "Name3"] => "all names",
+            ["Name1", "Name2", _] => "first two names",
             ["Name1", .. var x] => String.Join(",", x),
             // ["Name1", _, _] => "first name",
             _ => "no name"
