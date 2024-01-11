@@ -18,8 +18,8 @@ public static class NullableReferenceTypeDemo
         Console.WriteLine(p2.Details); // TODO : why is this not null?
         // p2.Details.FirstName = "Test";
         // IS working:
-        // typeof(DetailsGood).GetProperty(nameof(DetailsGood.FirstName))?.SetValue(p2.Details, "bla");
-        typeof(DetailsGood).GetProperty(nameof(DetailsGood.MiddleName))?.SetValue(p2.Details, "asdsdf");
+        typeof(DetailsGood).GetProperty(nameof(DetailsGood.FirstName))?.SetValue(p2.Details, "bla");
+        // typeof(DetailsGood).GetProperty(nameof(DetailsGood.MiddleName))?.SetValue(p2.Details, "asdsdf");
 
         var p = new PersonSampleBad();
         // p.Details = new() { FirstName = "Test", LastName = "Test2" };
@@ -29,7 +29,7 @@ public static class NullableReferenceTypeDemo
         }
         // not .netstandard20: ArgumentNullException.ThrowIfNull(p.Details);
         // not .netstandard20: ArgumentNullException.ThrowIfNull(p.Details.LastName);
-        Console.WriteLine(p.Details.LastName.Length);
+        // Console.WriteLine(p.Details.LastName.Length);
     }
     internal static IEnumerable<PersonSampleBad> Demo2()
     {

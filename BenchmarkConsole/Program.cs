@@ -1,5 +1,7 @@
 ﻿using BenchmarkConsole;
 using BenchmarkDotNet.Running;
+using Microsoft.Diagnostics.Tracing.Parsers.Clr;
 
-BenchmarkRunner.Run<MyBenchmarks>();
+Console.WriteLine("alsdkfjsd");
+// BenchmarkRunner.Run<MyBenchmarks>();
 // BenchmarkRunner.Run<MyBenchmarks2>();

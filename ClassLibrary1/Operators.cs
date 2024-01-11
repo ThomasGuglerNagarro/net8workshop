@@ -8,8 +8,7 @@ public class Operators
     {
         var environment = "PREPROD";
         String configSettings = null;
-        /*
-        if (environment == "UAT")
+        /* if (environment == "UAT")
             configSettings = "UAT";
         else if (environment == "PREPROD")
             configSettings = "PRP";
@@ -24,10 +23,10 @@ public class Operators
              environment == "PREPROD" ? "PRP" :
              environment == "PROD" ? "PRD" : string.Empty;*/
         // 3: better with switch statement?
-       /*  switch (environment)
+        /* switch (environment)
         {
             case "UAT":
-            case "UAT2":
+            // case "UAT2":
                 configSettings = "UAT";
                //  Console.WriteLine("234234");
                 break;
@@ -40,7 +39,7 @@ public class Operators
             default:
                 configSettings = string.Empty;
                 break;
-        }*/
+        } */
         // 4: best? switch expression
        /* configSettings = environment switch
         {
@@ -72,11 +71,12 @@ public class Operators
         var slice2 = array[..^3];     // array[Range.EndAt(new Index(3, fromEnd: true))]
         var slice3 = array[2..];      // array[Range.StartAt(2)]
         var slice4 = array[..];       // array[Range.All]
+        // var slice5 = array[2..^4];
 
         // ?? 
         int? number = null;
         number = number ?? 0;
-        // ??= operators - the null - coalescing operators => Thread safe?
+        // ??= operators - the null - coalescing operators => Thread safe? => Ja
         List<int> numbers = null;
         int? a = null;
         Console.WriteLine((numbers is null)); // expected: true
@@ -92,7 +92,7 @@ public class Operators
         Console.WriteLine(string.Join(" ", numbers));  // output: 5 0
         Console.WriteLine(a);  // output: 0
 
-        using var f1 = new FileStream("sdfsdf", FileMode.Open); // using declaration
+        // using var f1 = new FileStream("sdfsdf", FileMode.Open); // using declaration
     }
 
     /// <summary>

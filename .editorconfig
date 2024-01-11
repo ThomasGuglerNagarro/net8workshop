@@ -256,7 +256,7 @@ dotnet_diagnostic.CS1591.severity = silent
 # 'xxx' hides inherited member 'yyy'. Use the new keyword if hiding was intended.
 dotnet_diagnostic.CS0108.severity = silent
 # Converting null literal or possible null value to non-nullable type.
-dotnet_diagnostic.CS8600.severity = silent
+dotnet_diagnostic.CS8600.severity = warning
 # Possible null reference return.	
 dotnet_diagnostic.CS8603.severity = silent
 # Dereference of a possibly null reference.

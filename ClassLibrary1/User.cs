@@ -11,7 +11,7 @@ internal record Person3(string FirstName); // implicit class
 /// </summary>
 /// <param name="name"></param>
 /// <param name="dateOfBirth"></param>
-public class User(string name, DateOnly dateOfBirth)
+public class User(string name, DateOnly dateOfBirth, string something)
 {
     private string otherProp;
     public string OtherProp
@@ -24,6 +24,7 @@ public class User(string name, DateOnly dateOfBirth)
     // public int Age2 => DateTime.Today.Year - dateOfBirth.Year;
     public string OutputOtherProp(User u)
     {
+        Console.WriteLine(something);
         _ = u ?? throw new ArgumentNullException(); // discard, besser als "if null else,..
         return u.OtherProp;
     }
@@ -31,12 +32,16 @@ public class User(string name, DateOnly dateOfBirth)
 
     public static int GetNameLength(User user)
     {
-        // null check? _ = user.PropThatCanBeNull ?? throw new ArgumentNullException(); 
-        // return user.PropThatCanBeNull.Length; // warning, get rid of warning with "!" operator
-        return user?.PropThatCanBeNull?.Length ?? 0; // ?. operator and null colescing operator
+        int? wert = default;
+        if (wert.HasValue)
+            wert = 5;
+
+          _ = user.PropThatCanBeNull ?? throw new ArgumentNullException(); 
+        return user.PropThatCanBeNull.Length; // warning, get rid of warning with "!" operator
+        // return user?.PropThatCanBeNull?.Length ?? 0; // ?. operator and null colescing operator
 
         // property pattern matching fpr "not null check"
-        // V1 if (user?.PropThatCanBeNull is { Length: var length }) return length; 
+        // if (user?.PropThatCanBeNull is { Length: var length }) return length; 
         // return user?.PropThatCanBeNull is { Length: var length } ? length : 0;
     }
 
@@ -58,7 +63,7 @@ public record class UserR(string Name, DateOnly DateOfBirth)
         Console.WriteLine(dateOfBirth);
 
         // Check Utils.cs
-        var (year, month, day) = DateTime.Now;
+        var (year, _, _) = DateTime.Now;
     }
     // ~UserR() => Console.WriteLine("Destructor");
     public void Deconstruct(out string name, out DateOnly dateOfBirth)

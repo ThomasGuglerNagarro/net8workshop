@@ -32,17 +32,17 @@ public class StringLiterals
 
     public string RawStringLiterals()
     {
-        var xml = $"""
+        var xml = $""""
 <?xml version='1.0' encoding='utf-8'?>  
 <configuration>  
   <connectionStrings>  
     <clear />  
-    <add name="Name"
+    <add name="""Name"""
      providerName="System.Data.ProviderName"
      connectionString="Valid Connection String;" />  
   </connectionStrings>  
 </configuration>
-""";
+"""";
         return xml;
     }
 }

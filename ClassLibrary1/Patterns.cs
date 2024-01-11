@@ -9,9 +9,18 @@ public static class PersonRecordDemo
         var p = new PersonRecord("Thomas", 27);
         Console.WriteLine(p.Name);
         var copiedPerson = p with { Age = 46 };
+
+        var testResultz = 5 switch
+        {
+            5 => "asd5",
+            4 => "4asdasd",
+            >5 => "größeralskjd",
+        };
+
         var switchResult = copiedPerson switch
         {
-            ("Thomas", > 27) => "I'm the copy of Thomas",
+            ("lkm", < 27) => "kleiner als 27",
+            ("Thomas", > 27 or < 27) => "I'm the copy of Thomas",
             ("Thomas", _) => "I'm Thomas",
             _ => throw new ArgumentException()
         };
@@ -42,6 +51,8 @@ internal record Circle : Something;
 internal record Car(int Passengers, int Weight);
 
 internal record Bus();
+
+public record Taxi();
 public class Patterns
 {
     /// <summary>
@@ -52,8 +63,7 @@ public class Patterns
     public static bool IsWeekDay(DateOnly date) =>
         date.DayOfWeek switch
         {
-            DayOfWeek.Saturday => false,
-            DayOfWeek.Sunday => false,
+            DayOfWeek.Saturday or DayOfWeek.Sunday => false,
             _ => true
         };
 
@@ -81,15 +91,16 @@ public class Patterns
             (_, _) => false,
         };
 
-    internal static decimal CalculateToll(object vehicle) => // switch type pattern
+    public static decimal CalculateToll(object vehicle) => // switch type pattern
         vehicle switch
         {
             Car { Passengers: 0 } => 1.00m,
             Car { Passengers: >= 1 and <= 2 } => 1.50m,
             Car => 2.00m,
             Bus => 5.00m,
-            { } => throw new ArgumentException("unknown type"),
+            { } => throw new ArgumentException("unknown type, or Taxi"),
             null => throw new ArgumentNullException(nameof(vehicle)),
+            // _ => throw new ArgumentNullException(nameof(vehicle)),
         };
 
     public static void ListPatterns()
@@ -122,10 +133,16 @@ public class Patterns
         }
         // new: ".." range operator
         // capture with "var s", slice pattern
-        if (x is [1,_,..var s,5])
+        if (x is [1, _, .. var s, 5])
         {
             Console.WriteLine(s);
             Console.WriteLine("Pattern match");
+        }
+
+        var data = "sldkjfsdlkfj";
+        if (data is ['d',..])
+        {
+            Console.WriteLine("ok");
         }
     }
 
@@ -145,7 +162,7 @@ public class Patterns
             ["Name1", "Name2", "Name3"] => "all names",
             ["Name1", "Name2", _] => "first two names",
             ["Name1", .. var x] => String.Join(",", x),
-            // ["Name1", _, _] => "first name",
+                // ["Name1", _, _] => "first name",
             _ => "no name"
         };
         Console.WriteLine(result);
@@ -156,8 +173,8 @@ public class Patterns
         var list = new Rectangle[] { new(1, 2), new(3, 4) };
         var result = list switch
         {
-            // [Rectangle,..] => "first is rectanble, and dont care about the rest",
-            [Rectangle, .. var middle, _] => "first is rectanble,ignore the last, und take the middle elements",
+        // [Rectangle,..] => "first is rectanble, and dont care about the rest",
+        [Rectangle, .. var middle, _] => "first is rectanble,ignore the last, und take the middle elements",
         };
     }
 

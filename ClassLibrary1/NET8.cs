@@ -7,6 +7,7 @@ using MyPoint = (int x, int y);
 using Grade2 = (decimal grade, decimal weight);
 using unsafe Grade3 = (decimal grade, decimal weight)*;
 
+
 namespace ClassLibrary1;
 
 // Microsoft.Bcl.TimeProvider for TimeProvider
@@ -37,6 +38,7 @@ public class NET8
     {
         // new terse syntax : the goal is to provide a unified and user-friendly API
         // for declaring collections.
+        // List<Personn> start2 = [default, default, new()];
         List<int> start = [1, 2, 3];
         int[] start2 = { 1, 2, 3 };
         Span<int> end = [5, 6, 7];
@@ -52,7 +54,7 @@ public class NET8
         var p = new Person("Seth", "Gecko");
         // p.FirstName = "Alan"; // ERROR record are immutable by default
 
-        // throw new ArgumentNullException($"Fehler bei Klasse {nameof(NET8)} , Methode Z");
+        // throw new ArgumentNullException($"Fehler bei Klasse {nameof(p.FirstName)} , Methode Z");
         // Console.WriteLine(nameof(p.LastName)); // nameof now with members names
     }
 
