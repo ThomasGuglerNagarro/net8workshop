@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="Directory.Build.props" />
+  </Folder>
+  <Project Path="BenchmarkConsole\BenchmarkConsole.csproj" />
+  <Project Path="ClassLibrary1\ClassLibrary1.csproj" />
+  <Project Path="ConsoleAppFullFramework48\ConsoleAppFullFramework48.csproj" Type="Classic C#" />
+  <Project Path="TestProject1\TestProject1.csproj" />
+  <Project Path="UnitTestProjectFullFramework481\UnitTestProjectFullFramework481.csproj" Type="Classic C#" />
+</Solution>
