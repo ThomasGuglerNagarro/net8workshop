@@ -7,7 +7,22 @@ using MyPoint = (int x, int y);
 using Grade2 = (decimal grade, decimal weight);
 using unsafe Grade3 = (decimal grade, decimal weight)*;
 
-
+/*
+ * BCL:
+ * TimeProvider
+ * Random.Shuffle
+ * Frozen*
+ * CompositeFormat
+ *   var t = CompositeFormat.Format("Hello {0}!", "world");
+ *   string.Format(CultureInfo.InvariantCulture, template, args);
+ * SearchValues<T>
+ *   var values = SearchValues.Create([(byte)'\n']);
+ *   byte[] x = [ 1, 2, 3, 4, 5 ];
+ *   x.AsSpan().IndexOfAny(values   );
+ * Streaming deserialization APIs
+ * IUtf8SpanFormattable
+ * One shot hash functions
+ */
 namespace ClassLibrary1;
 
 // Microsoft.Bcl.TimeProvider for TimeProvider

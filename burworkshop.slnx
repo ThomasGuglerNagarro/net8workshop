@@ -5,7 +5,7 @@
   </Folder>
   <Project Path="BenchmarkConsole\BenchmarkConsole.csproj" />
   <Project Path="ClassLibrary1\ClassLibrary1.csproj" />
-  <Project Path="ConsoleAppFullFramework48\ConsoleAppFullFramework48.csproj" Type="Classic C#" />
+  <Project Path="ConsoleAppFullFramework48\ConsoleAppFullFramework48.csproj" Id="94185010-4edd-4f04-b4a4-aa4ea7376840" />
   <Project Path="TestProject1\TestProject1.csproj" />
-  <Project Path="UnitTestProjectFullFramework481\UnitTestProjectFullFramework481.csproj" Type="Classic C#" />
+  <Project Path="UnitTestProjectFullFramework481\UnitTestProjectFullFramework481.csproj" Id="0334723c-0605-4431-9164-a2562a1e1f98" />
 </Solution>

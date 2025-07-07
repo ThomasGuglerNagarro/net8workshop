@@ -1,6 +1,6 @@
 ﻿using System;
 
-[assembly: CLSCompliant(false)]
+// [assembly: CLSCompliant(true)] => default(false)
 
 namespace ClassLibrary1;
 
