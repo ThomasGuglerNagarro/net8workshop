@@ -1,7 +1,12 @@
 ﻿using BenchmarkConsole;
 using BenchmarkDotNet.Running;
+using ClassLibrary1;
 using Microsoft.Diagnostics.Tracing.Parsers.Clr;
 
-Console.WriteLine("alsdkfjsd");
+// User.SetName();
+
+BenchmarkRunner.Run<StaticVsInstanceBenchmark>();
+
+Console.ReadLine();
 // BenchmarkRunner.Run<MyBenchmarks>();
 // BenchmarkRunner.Run<MyBenchmarks2>();

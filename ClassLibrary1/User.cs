@@ -19,7 +19,10 @@ public class User(string name, DateOnly dateOfBirth, string something)
         get => this.otherProp;
         set => this.otherProp = value ?? throw new ArgumentNullException(paramName: nameof(value), message: "Cannot set name to null");
     }
-    public string Name { get; } = name;
+    // public string Name { get; } = name;
+    public string Name { get; } = !string.IsNullOrWhiteSpace(name) ? name
+        : throw new ArgumentException("Name darf nicht leer sein");
+
     public int Age { get; } = DateTime.Today.Year - dateOfBirth.Year;
     // public int Age2 => DateTime.Today.Year - dateOfBirth.Year;
     public string OutputOtherProp(User u)
@@ -29,6 +32,11 @@ public class User(string name, DateOnly dateOfBirth, string something)
         return u.OtherProp;
     }
     public string? PropThatCanBeNull { get; set; } // nullable reference type
+
+    public static void SetName()
+    {
+        var user = new User(String.Empty, DateOnly.MinValue, "something");
+    }
 
     public static int GetNameLength(User user)
     {
